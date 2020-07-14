@@ -44,4 +44,17 @@ class QuesBank {
   bool answer() {
     return _questionBank[_quesNumber].quesAnswer;
   }
+
+  bool isFinished() {
+    if (_quesNumber >= _questionBank.length - 1) {
+      print('Now returning true');
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void reset() {
+    _quesNumber = 0;
+  }
 }

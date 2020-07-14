@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:quizApp/QuesBank.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 QuesBank quesBank = QuesBank();
+int counter = 0;
 void main() => runApp(Quizzler());
 
 class Quizzler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
         backgroundColor: Colors.grey.shade900,
         body: SafeArea(
@@ -34,12 +37,32 @@ class _QuizPageState extends State<QuizPage> {
     print(correctAnswer);
     print(userAnswer);
     setState(() {
-      if (userAnswer == correctAnswer) {
-        scoreKeeper.add(Icon(Icons.check, color: Colors.green));
+      if (quesBank.isFinished() == true) {
+        Alert(
+            context: context,
+            type: AlertType.error,
+            title: 'Finished!',
+            desc: 'You\'ve reached the end of the quiz. Your score is $counter',
+            buttons: [
+              DialogButton(
+                  child: Text('Restart'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  })
+            ]).show();
+
+        quesBank.reset();
+        counter = 0;
+        scoreKeeper = [];
       } else {
-        scoreKeeper.add(Icon(Icons.close, color: Colors.red));
+        if (userAnswer == correctAnswer) {
+          scoreKeeper.add(Icon(Icons.check, color: Colors.green));
+          counter += 1;
+        } else {
+          scoreKeeper.add(Icon(Icons.close, color: Colors.red));
+        }
+        quesBank.nextQuestion();
       }
-      quesBank.nextQuestion();
     });
   }
 
@@ -50,12 +73,25 @@ class _QuizPageState extends State<QuizPage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: Text(
+              'Choose True/False',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20.0,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
+        Expanded(
           flex: 5,
           child: Padding(
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                quesBank.question(),
+                'Question- \n\n' + quesBank.question(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
