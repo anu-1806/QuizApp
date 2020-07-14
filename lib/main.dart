@@ -1,32 +1,30 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(Quizzler());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class Quizzler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.grey,
-        appBar: AppBar(
-          title: Text('Quiz App'),
-          backgroundColor: Colors.black,
+        backgroundColor: Colors.grey.shade900,
+        body: SafeArea(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            child: QuizPage(),
+          ),
         ),
-        body: SafeArea(child: QuizApp()),
       ),
     );
   }
 }
 
-class QuizApp extends StatefulWidget {
+class QuizPage extends StatefulWidget {
   @override
-  _QuizAppState createState() => _QuizAppState();
+  _QuizPageState createState() => _QuizPageState();
 }
 
-class _QuizAppState extends State<QuizApp> {
+class _QuizPageState extends State<QuizPage> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -34,28 +32,66 @@ class _QuizAppState extends State<QuizApp> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         Expanded(
-          child: Center(
-            child: Text('this is a question'),
+          flex: 5,
+          child: Padding(
+            padding: EdgeInsets.all(10.0),
+            child: Center(
+              child: Text(
+                'This is a question.',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 25.0,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(15.0),
+            child: FlatButton(
+              textColor: Colors.white,
+              color: Colors.green,
+              child: Text(
+                'TRUE',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20.0,
+                ),
+              ),
+              onPressed: () {
+                //The user picked true.
+              },
+            ),
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: EdgeInsets.all(15.0),
+            child: FlatButton(
+              color: Colors.red,
+              child: Text(
+                'FALSE',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () {
+                //The user picked false.
+              },
+            ),
           ),
         ),
         Row(
           children: <Widget>[
-            Expanded(
-              child: FlatButton(
-                color: Colors.green,
-                onPressed: () {},
-                child: Text('TRUE'),
-              ),
-            ),
-            Expanded(
-              child: FlatButton(
-                color: Colors.red,
-                onPressed: () {},
-                child: Text('FALSE'),
-              ),
-            ),
+            Text(
+              'Score Keeping',
+              style: TextStyle(color: Colors.white),
+            )
           ],
-        ),
+        )
       ],
     );
   }
